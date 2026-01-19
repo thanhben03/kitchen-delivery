@@ -23,7 +23,6 @@ public class PlateCompleteVisual : MonoBehaviour
 
         foreach (KitchenObjectSO_GameObject kitchenObjectSOGameObject in kitchenObjectSOGameObjectList)
         {
-            Debug.Log("2222222");
             kitchenObjectSOGameObject.gameObject.SetActive(false);
         }
     }
