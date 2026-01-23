@@ -14,6 +14,11 @@ public class CuttingCounter : BaseCounter, IHasProgress
 
     public event Action<float> OnProgressChanged;
 
+    public static void ResetStaticData ()
+    {
+        OnAnyCut = null;
+    }
+
     public override void Interact(Player player)
     {
         if (!HasKitchenObject())
