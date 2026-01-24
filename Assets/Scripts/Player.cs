@@ -165,7 +165,13 @@ public class Player : MonoBehaviour, IKitchenObjectParent
 
     public KitchenObject GetKitchenObject()
     {
-        return kitchenObject;
+        if (kitchenObject != null)
+        {
+            return kitchenObject;
+
+        }
+
+        return null;
     }
 
     public void ClearKitchentObject()

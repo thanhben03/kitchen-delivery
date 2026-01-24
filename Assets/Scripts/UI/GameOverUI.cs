@@ -11,7 +11,7 @@ public class GameOverUI : MonoBehaviour
     void Start()
     {
         KitchenGameManager.Instance.OnStateChanged += KitchenGameManager_OnStateChanged;
-
+        playAgainButton.onClick.AddListener(() => Loader.Load(Loader.Scene.GameScene));
         Hide();
     }
 
@@ -27,12 +27,6 @@ public class GameOverUI : MonoBehaviour
         {
             Hide();
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     private void Show()
