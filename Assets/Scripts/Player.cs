@@ -1,11 +1,19 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class Player : MonoBehaviour, IKitchenObjectParent
+public class Player : NetworkBehaviour, IKitchenObjectParent
 {
-    public static Player Instance { get; private set; }
+    public static event Action OnAnyPlayerSpawned;
+    public static event Action<Player> OnAnyPickedSomething;
+
+    public static void ResetStaticData()
+    {
+        OnAnyPlayerSpawned = null;
+    }
+    public static Player LocalInstance { get; private set; }
 
     public event EventHandler<OnSelectedCounterChangedEventArgs> OnSelectedCounterChanged;
     public event Action<Player> OnPickedSomething;
@@ -15,7 +23,6 @@ public class Player : MonoBehaviour, IKitchenObjectParent
     }
 
     [SerializeField] private float moveSpeed = 7f;
-    [SerializeField] private GameInput gameInput;
     private bool isWalking = false;
     [SerializeField] private LayerMask layerMask;
 
@@ -30,17 +37,23 @@ public class Player : MonoBehaviour, IKitchenObjectParent
 
     private void Awake()
     {
-        if (Instance != null)
-        {
-            Debug.LogError("we have more one instance");
-        }
 
-        Instance = this;
+        //Instance = this;
     }
     void Start()
     {
-        gameInput.OnInteracAction += GameInput_OnInteracAction;
-        gameInput.OnInteracAlternateAction += GameInput_OnInteracAlternateAction; ;
+        GameInput.Instance.OnInteracAction += GameInput_OnInteracAction;
+        GameInput.Instance.OnInteracAlternateAction += GameInput_OnInteracAlternateAction; ;
+    }
+
+    public override void OnNetworkSpawn()
+    {
+        if (IsOwner)
+        {
+            LocalInstance = this;
+        }
+
+        OnAnyPlayerSpawned?.Invoke();
     }
 
     private void GameInput_OnInteracAlternateAction(object sender, EventArgs e)
@@ -63,13 +76,18 @@ public class Player : MonoBehaviour, IKitchenObjectParent
     // Update is called once per frame
     void Update()
     {
+        if (!IsOwner)
+        {
+            return;
+        }
+
         HandleMovement();
         HandleInteractions();
     }
 
     private void HandleInteractions()
     {
-        Vector2 inputVector = gameInput.GetMovementVectorNormalized();
+        Vector2 inputVector = GameInput.Instance.GetMovementVectorNormalized();
 
         Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
 
@@ -100,7 +118,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
 
     private void HandleMovement()
     {
-        Vector2 inputVector = gameInput.GetMovementVectorNormalized();
+        Vector2 inputVector = GameInput.Instance.GetMovementVectorNormalized();
 
         Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
 
@@ -160,6 +178,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
         if (kitchenObject != null)
         {
             OnPickedSomething?.Invoke(this);
+            OnAnyPickedSomething?.Invoke(this);
         }
     }
 
@@ -182,5 +201,10 @@ public class Player : MonoBehaviour, IKitchenObjectParent
     public bool HasKitchenObject()
     {
         return kitchenObject != null;
+    }
+
+    public NetworkObject GetNetworkObject()
+    {
+        return NetworkObject;
     }
 }

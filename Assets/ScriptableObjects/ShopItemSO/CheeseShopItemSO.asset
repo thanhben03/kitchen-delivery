@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2b72d3883e929e4a9c194213cf72d32, type: 3}
   m_Name: CheeseShopItemSO
   m_EditorClassIdentifier: 
-  itemName: 
-  icon: {fileID: 0}
-  price: 0
+  itemName: Cheese
+  icon: {fileID: 21300000, guid: da2d04fe27b94e34ea0b624569b48a6f, type: 3}
+  price: 4

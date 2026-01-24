@@ -33,9 +33,9 @@ public class Customer : MonoBehaviour
 
     public void RequestRecipe()
     {
-        currentRecipeSO = DeliveryManager.Instance.GetRandomRecipeSO();
+        int index = DeliveryManager.Instance.GetRandomRecipeSOIndex();
 
-        DeliveryManager.Instance.RequestRecipe(currentRecipeSO);
+        DeliveryManager.Instance.RequestRecipe(index);
     }
 
     public void OutOfTimeDelivery()

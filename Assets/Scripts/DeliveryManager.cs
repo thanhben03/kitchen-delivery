@@ -1,9 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class DeliveryManager : MonoBehaviour
+public class DeliveryManager : NetworkBehaviour
 {
     public event Action OnRecipeSpawned;
     public event Action OnRecipeCompleted;
@@ -27,16 +28,24 @@ public class DeliveryManager : MonoBehaviour
         waitingRecipeSOList = new List<RecipeSO>();
     }
 
-    public void RequestRecipe(RecipeSO waitingRecipeSO)
+    public void RequestRecipe(int index)
     {
 
-        if (KitchenGameManager.Instance.IsGamePlaying() && waitingRecipeSOList.Count < waitingRecipesMax)
+        if (waitingRecipeSOList.Count < waitingRecipesMax)
         {
-            waitingRecipeSOList.Add(waitingRecipeSO);
-            OnRecipeSpawned?.Invoke();
+            SpawnNewWaitingRecipeClientRpc(index);
         }
-        
+       
     }
+
+    [ClientRpc]
+    private void SpawnNewWaitingRecipeClientRpc(int waitingRecipeIndex)
+    {
+        RecipeSO waitingRecipeSO = recipeListSO.recipeSOList[waitingRecipeIndex];
+        waitingRecipeSOList.Add(waitingRecipeSO);
+        OnRecipeSpawned?.Invoke();
+    }
+
     public void DeliverRecipe(PlateKitchenObject plateKitchenObject)
     {
 
@@ -64,15 +73,38 @@ public class DeliveryManager : MonoBehaviour
 
             if (plateContentsMatchesRecipe)
             {
-                successfulRecipesAmount++;
-                waitingRecipeSOList.RemoveAt(0);
-                OnRecipeCompleted?.Invoke();
-                OnRecipeSuccess?.Invoke();
+                DeliverCorrectRecipeServerRpc();
                 return;
             }
         }
-        
-        Debug.Log("No matches delivery");
+
+        DeliverIncorrectRecipeServerRpc();
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void DeliverCorrectRecipeServerRpc()
+    {
+        DeliverCorrectRecipeClientRpc();
+    }
+
+    [ClientRpc]
+    private void DeliverCorrectRecipeClientRpc()
+    {
+        successfulRecipesAmount++;
+        waitingRecipeSOList.RemoveAt(0);
+        OnRecipeCompleted?.Invoke();
+        OnRecipeSuccess?.Invoke();
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void DeliverIncorrectRecipeServerRpc()
+    {
+        DeliverIncorrectRecipeClientRpc();
+    }
+
+    [ClientRpc]
+    private void DeliverIncorrectRecipeClientRpc()
+    {
         OnRecipeFailed?.Invoke();
     }
 
@@ -125,9 +157,9 @@ public class DeliveryManager : MonoBehaviour
         return successfulRecipesAmount;
     }
 
-    public RecipeSO GetRandomRecipeSO()
+    public int GetRandomRecipeSOIndex()
     {
-        return recipeListSO.recipeSOList[UnityEngine.Random.Range(0, recipeListSO.recipeSOList.Count)];
+        return UnityEngine.Random.Range(0, recipeListSO.recipeSOList.Count);
         
     }
 }

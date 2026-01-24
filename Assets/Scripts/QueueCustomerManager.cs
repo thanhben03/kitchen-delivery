@@ -30,10 +30,10 @@ public class QueueCustomerManager : MonoBehaviour
 
     private void Update()
     {
-        if (!KitchenGameManager.Instance.IsGamePlaying())
-        {
-            return;
-        }
+        //if (!KitchenGameManager.Instance.IsGamePlaying())
+        //{
+        //    return;
+        //}
         spawnCustomerTimer -= Time.deltaTime;
         if (spawnCustomerTimer <= 0f)
         {
