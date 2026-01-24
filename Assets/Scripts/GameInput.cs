@@ -12,6 +12,7 @@ public class GameInput : MonoBehaviour
     public event EventHandler OnInteracAction;
     public event EventHandler OnInteracAlternateAction;
     public event EventHandler OnPauseAction;
+    public event EventHandler OnOpenShopAction;
     public enum Binding
     {
         Move_Up,
@@ -40,8 +41,14 @@ public class GameInput : MonoBehaviour
         playerInputActions.Player.Interact.performed += Interact_performed;
         playerInputActions.Player.InteractAlternate.performed += InteractAlternate_performed;
         playerInputActions.Player.Pause.performed += Pause_performed;
+        playerInputActions.Player.OpenShop.performed += OpenShop_performed; ;
 
-        
+
+    }
+
+    private void OpenShop_performed(InputAction.CallbackContext obj)
+    {
+        OnOpenShopAction?.Invoke(this, EventArgs.Empty);
     }
 
     private void OnDestroy()
