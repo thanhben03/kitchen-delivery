@@ -87,10 +87,15 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -2116629348065325527, guid: 6284956adda97b84598efef8ef22f51e,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 951099334
+      objectReference: {fileID: 0}
     - target: {fileID: 1372701091506782587, guid: 6284956adda97b84598efef8ef22f51e,
         type: 3}
       propertyPath: m_RootOrder
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1372701091506782587, guid: 6284956adda97b84598efef8ef22f51e,
         type: 3}
@@ -177,7 +182,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2494962200941968363, guid: 6284956adda97b84598efef8ef22f51e,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3522089006020767178}
+      addedObject: {fileID: 5178408395215881890}
   m_SourcePrefab: {fileID: 100100000, guid: 6284956adda97b84598efef8ef22f51e, type: 3}
 --- !u!4 &2008527412913957724 stripped
 Transform:
@@ -197,7 +202,7 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 6891425691924517730}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &3522089006020767178
+--- !u!114 &5178408395215881890
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -211,7 +216,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   counterTopPoint: {fileID: 2008527412913957724}
   kitchenObject: {fileID: 0}
-  kitchenObjectSO: {fileID: 11400000, guid: 33d8b7eb9df97ba4f945852e32536cb9, type: 2}
+  kitchenObjectSO: {fileID: 0}
 --- !u!1001 &9039383508720933255
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -344,6 +349,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9f0d35b4a00d6846b0d8f9d51ef4d13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clearCounter: {fileID: 3522089006020767178}
+  clearCounter: {fileID: 5178408395215881890}
   visualGameObjectArr:
   - {fileID: 629852357334178504}
