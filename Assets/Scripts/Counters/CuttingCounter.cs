@@ -46,8 +46,7 @@ public class CuttingCounter : BaseCounter, IHasProgress
                 {
                     if (plateKitchenObject.TryAddIngredient(GetKitchenObject().GetKitchenObjectSO()))
                     {
-                        KitchenObject kitchenObject = GetKitchenObject();
-                        KitchenObject.DestroyKitchenObject(kitchenObject);
+                        KitchenObject.DestroyKitchenObject(GetKitchenObject());
 
                     }
 
