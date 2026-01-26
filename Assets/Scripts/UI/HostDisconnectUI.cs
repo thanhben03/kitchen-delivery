@@ -8,9 +8,17 @@ public class HostDisconnectUI : MonoBehaviour
 {
     [SerializeField] private Button playAgaintButton;
 
+
+    private void Awake()
+    {
+        playAgaintButton.onClick.AddListener(() => {
+            Loader.Load(Loader.Scene.MainMenuScene);
+        });
+    }
     private void Start()
     {
         NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
+        Hide();
     }
 
     private void NetworkManager_OnClientDisconnectCallback(ulong clientId)
