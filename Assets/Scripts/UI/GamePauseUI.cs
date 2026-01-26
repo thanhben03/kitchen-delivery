@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,6 +17,7 @@ public class GamePauseUI : MonoBehaviour
             KitchenGameManager.Instance.TogglePauseGame();
         });
         mainMenuButton.onClick.AddListener(() => {
+            NetworkManager.Singleton.Shutdown();
             Loader.Load(Loader.Scene.MainMenuScene);
         });
         optionsButton.onClick.AddListener(() => {
@@ -26,18 +28,18 @@ public class GamePauseUI : MonoBehaviour
 
     private void Start()
     {
-        KitchenGameManager.Instance.OnGamePaused += KitchenGameManager_OnGamePaused;
-        KitchenGameManager.Instance.OnGameUnpaused += KitchenGameManager_OnGameUnpaused;
+        KitchenGameManager.Instance.OnLocalGamePaused += KitchenGameManager_OnLocalGamePaused;
+        KitchenGameManager.Instance.OnLocalGameUnpaused += KitchenGameManager_OnLocalGameUnpaused;
 
         Hide();
     }
 
-    private void KitchenGameManager_OnGameUnpaused()
+    private void KitchenGameManager_OnLocalGameUnpaused()
     {
         Hide();
     }
 
-    private void KitchenGameManager_OnGamePaused()
+    private void KitchenGameManager_OnLocalGamePaused()
     {
         Show();
     }
@@ -46,7 +48,7 @@ public class GamePauseUI : MonoBehaviour
     {
         gameObject.SetActive(true);
 
-        //resumeButton.Select();
+        resumeButton.Select();
     }
 
     private void Hide()

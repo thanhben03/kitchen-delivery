@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,7 +12,11 @@ public class GameOverUI : MonoBehaviour
     void Start()
     {
         KitchenGameManager.Instance.OnStateChanged += KitchenGameManager_OnStateChanged;
-        playAgainButton.onClick.AddListener(() => Loader.Load(Loader.Scene.GameScene));
+        playAgainButton.onClick.AddListener(() =>
+        {
+            NetworkManager.Singleton.Shutdown();
+            Loader.Load(Loader.Scene.GameScene);
+        });
         Hide();
     }
 
