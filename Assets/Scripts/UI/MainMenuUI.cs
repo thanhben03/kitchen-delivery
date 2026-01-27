@@ -8,14 +8,18 @@ public class MainMenuUI : MonoBehaviour
 {
 
 
-    [SerializeField] private Button playButton;
+    [SerializeField] private Button multiplayerButton;
+    [SerializeField] private Button singlePlayerButton;
     [SerializeField] private Button quitButton;
 
 
     private void Awake()
     {
-        playButton.onClick.AddListener(() => {
+        multiplayerButton.onClick.AddListener(() => {
             Loader.Load(Loader.Scene.LobbyScene);
+        });
+        singlePlayerButton.onClick.AddListener(() => {
+            Loader.Load(Loader.Scene.GameScene);
         });
         quitButton.onClick.AddListener(() => {
             Application.Quit();
