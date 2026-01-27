@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using Unity.Netcode;
+using Unity.Netcode.Transports.UTP;
 using Unity.Services.Authentication;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -13,6 +14,7 @@ public class KitchenGameMultiplayer : NetworkBehaviour
     public const string PLAYER_NAME_PLAYER_PREFS_KEY = "PlayerName";
     public static KitchenGameMultiplayer Instance { get; private set; }
 
+    public static bool playMultiplayer;
 
     public event Action OnTryingToJoinGame;
     public event Action<string> OnFailedToJoinGame;
@@ -34,6 +36,15 @@ public class KitchenGameMultiplayer : NetworkBehaviour
         playerDataNetworkList.OnListChanged += PlayerDataNetworkList_OnListChanged;
     }
 
+    private void Start()
+    {
+        if (!playMultiplayer)
+        {
+            StartHost();
+            Loader.LoadNetwork(Loader.Scene.GameScene);
+        }
+    }
+
     public string GetPlayerName()
     {
         return playerName;
@@ -52,6 +63,15 @@ public class KitchenGameMultiplayer : NetworkBehaviour
 
     public void StartHost()
     {
+        if (!playMultiplayer)
+        {
+            UnityTransport transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
+            if (transport != null)
+            {
+                transport.SetConnectionData("127.0.0.1", 7777);
+            }
+        }
+
         NetworkManager.Singleton.ConnectionApprovalCallback += NetworkManager_ConnectionApprovalCallback;
         NetworkManager.Singleton.OnClientConnectedCallback += NetworkManager_OnClientConnectedCallback;
         NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_Server_OnClientDisconnectedCallback;
