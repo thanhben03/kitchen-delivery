@@ -1,15 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CharacterSelectPlayer : MonoBehaviour
 {
     [SerializeField] private int playerIndex;
     [SerializeField] private GameObject readyGameObject;
+    [SerializeField] private PlayerVisual playerVisual;
+    [SerializeField] private Button kickButton;
+    [SerializeField] private TextMeshPro playerName;
+
+    private void Awake()
+    {
+        kickButton.onClick.AddListener(() =>
+        {
+            PlayerData playerData = KitchenGameMultiplayer.Instance.GetPlayerDataFromPlayerIndex(playerIndex);
+            KitchenGameLobby.Instance.KickPlayer(playerData.playerId.ToString());
+            KitchenGameMultiplayer.Instance.KickPlayer(playerData.clientId);
+        });
+    }
     private void Start()
     {
         KitchenGameMultiplayer.Instance.OnPlayerDataNetworkListChanged += KitchenGameMultiplayer_OnPlayerDataNetworkListChanged;
-        CharacterSelectReady.Instance.OnReadyChanged += CharacterSelectReady_OnReadyChanged; ;
+        CharacterSelectReady.Instance.OnReadyChanged += CharacterSelectReady_OnReadyChanged;
+        kickButton.gameObject.SetActive(NetworkManager.Singleton.IsServer);
         UpdatePlayer();
     }
 
@@ -30,6 +47,9 @@ public class CharacterSelectPlayer : MonoBehaviour
             Show();
             PlayerData playerData = KitchenGameMultiplayer.Instance.GetPlayerDataFromPlayerIndex(playerIndex);
             readyGameObject.SetActive(CharacterSelectReady.Instance.IsPlayerReady(playerData.clientId));
+            playerVisual.SetPlayerColor(KitchenGameMultiplayer.Instance.GetPlayerColor(playerData.colorId));
+
+            playerName.text = playerData.playerName.ToString();
         }
         else
         {
@@ -45,5 +65,11 @@ public class CharacterSelectPlayer : MonoBehaviour
     private void Hide()
     {
         gameObject.SetActive(false);
+    }
+
+    private void OnDestroy()
+    {
+        KitchenGameMultiplayer.Instance.OnPlayerDataNetworkListChanged -= KitchenGameMultiplayer_OnPlayerDataNetworkListChanged;
+
     }
 }

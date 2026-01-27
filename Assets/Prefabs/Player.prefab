@@ -63,6 +63,7 @@ MonoBehaviour:
   - {x: 2, y: 0, z: 0}
   - {x: -2, y: 0, z: -2}
   - {x: 2, y: 0, z: -2}
+  playerVisual: {fileID: 730593502894056321}
   selectedCounter: {fileID: 0}
   kitchenObjectHoldPoin: {fileID: 1507374121346851376}
 --- !u!114 &1507374120272358806
@@ -576,6 +577,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 4279608306445841055}
+    - targetCorrespondingSourceObject: {fileID: 3187384679435710046, guid: c1e7e3c9fe3257f4ea9f080e7208ec3b,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 730593502894056321}
   m_SourcePrefab: {fileID: 100100000, guid: c1e7e3c9fe3257f4ea9f080e7208ec3b, type: 3}
 --- !u!4 &3768445283408806302 stripped
 Transform:
@@ -616,9 +621,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TransitionStateInfoList: []
   m_Animator: {fileID: 4208415446472107949}
+--- !u!114 &730593502894056321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4093941097400858217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ebdbbe393e864a4d80cc3455d01a6c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skinnedMesh: {fileID: 9088154674032585529}
 --- !u!95 &4208415446472107949 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 3354072639957532570, guid: c1e7e3c9fe3257f4ea9f080e7208ec3b,
+    type: 3}
+  m_PrefabInstance: {fileID: 1507374120528697399}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &9088154674032585529 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 7707022635288130318, guid: c1e7e3c9fe3257f4ea9f080e7208ec3b,
     type: 3}
   m_PrefabInstance: {fileID: 1507374120528697399}
   m_PrefabAsset: {fileID: 0}
